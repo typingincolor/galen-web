@@ -1,9 +1,6 @@
 $(function() {
-  console.log("ready!");
-
   // select response_time,status_code from statistic where time > now() - 2m
   $.get("http://192.168.59.103:8086/query?db=galen&q=select%20response_time%2Cstatus_code%20from%20statistic%20where%20time%20%3E%20now()%20-%202m", function(data) {
-    console.dir(data.results[0].series[0].values);
 
     var x = ['time'];
     var y = ['duration'];
@@ -14,8 +11,6 @@ $(function() {
       y.push(value[1]);
       statuscode[value[2]] = 1 + (statuscode[value[2]] || 0);
     });
-
-    console.log(statuscode);
 
     piechart_data = [];
 
@@ -29,7 +24,6 @@ $(function() {
       bindto: '#response_time',
       data: {
         x: 'time',
-        //x_format: '%Y-%m-%dT%H:%M:%S.%L%Z',
         columns: [
           x,
           y
