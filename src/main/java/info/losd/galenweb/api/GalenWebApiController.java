@@ -7,7 +7,6 @@ import org.influxdb.dto.QueryResult;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
@@ -76,17 +75,19 @@ public class GalenWebApiController {
                                          @RequestParam(value = "period",
                                                        required = false,
                                                        defaultValue = "2m")
-                                         String period) {
+                                         String period)
+    {
         return new ResponseEntity<>("hello", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/apis/{api}/statistics/mean", method = RequestMethod.GET)
     @ResponseBody
     public HttpEntity<String> mean(@PathVariable String api,
-                                         @RequestParam(value = "period",
-                                                       required = false,
-                                                       defaultValue = "2m")
-                                         String period) {
+                                   @RequestParam(value = "period",
+                                                 required = false,
+                                                 defaultValue = "2m")
+                                   String period)
+    {
         return new ResponseEntity<>("hello", HttpStatus.OK);
     }
 }
