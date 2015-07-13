@@ -4,6 +4,9 @@ apply plugin: 'idea'
 
 repositories {
     jcenter()
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 buildscript {
@@ -21,9 +24,15 @@ jar {
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compile 'org.slf4j:slf4j-api:1.7.12'
+    compile name: 'influxdb-java-2.0-SNAPSHOT'
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest-all:1.3'

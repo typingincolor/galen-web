@@ -45,7 +45,7 @@ public class GalenWebApiController {
         Query query = new Query("SHOW TAG VALUES FROM statistic WITH KEY = api", "galen");
         QueryResult apiList = influxDB.query(query);
 
-        List<String> apis = new LinkedList<String>();
+        List<String> apis = new LinkedList<>();
         apiList.getResults().get(0).getSeries().get(0).getValues().forEach(value -> {
            apis.add(value.get(0).toString());
         });

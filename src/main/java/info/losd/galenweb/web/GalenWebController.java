@@ -1,5 +1,8 @@
 package info.losd.galenweb.web;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 /**
  * The MIT License (MIT)
  * <p>
@@ -23,5 +26,10 @@ package info.losd.galenweb.web;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+@Controller
 public class GalenWebController {
+    @RequestMapping("/")
+    public String index() {
+        return "index";
+    }
 }
