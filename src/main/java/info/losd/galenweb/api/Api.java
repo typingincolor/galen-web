@@ -1,10 +1,8 @@
-package info.losd.galenweb;
+package info.losd.galenweb.api;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.hateoas.ResourceSupport;
 
 /**
  * The MIT License (MIT)
@@ -29,10 +27,16 @@ import org.springframework.context.annotation.ComponentScan;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-@SpringBootApplication
-@ComponentScan
-public class GalenWeb {
-    public static void main(String[] args) {
-        SpringApplication.run(GalenWeb.class, args);
+public class Api extends ResourceSupport {
+    private String api;
+
+    @JsonCreator
+    public Api(@JsonProperty("api") String api) {
+        this.api = api;
     }
+
+    public String getApi() {
+        return api;
+    }
+
 }

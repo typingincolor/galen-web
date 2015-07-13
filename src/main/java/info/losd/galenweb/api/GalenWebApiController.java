@@ -4,14 +4,17 @@ import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * The MIT License (MIT)
@@ -40,16 +43,50 @@ import java.util.List;
 public class GalenWebApiController {
     InfluxDB influxDB = InfluxDBFactory.connect("http://docker.local:8086", "root", "root");
 
-    @RequestMapping(value = "/apis", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<String> getApiList() {
+    @RequestMapping(value = "/apis", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpEntity<List<Api>> getApiList() {
         Query query = new Query("SHOW TAG VALUES FROM statistic WITH KEY = api", "galen");
         QueryResult apiList = influxDB.query(query);
 
-        List<String> apis = new LinkedList<>();
+        List<Api> apis = new LinkedList<>();
+
         apiList.getResults().get(0).getSeries().get(0).getValues().forEach(value -> {
-           apis.add(value.get(0).toString());
+            String name = value.get(0).toString();
+
+            Api api = new Api(name);
+            api.add(linkTo(methodOn(GalenWebApiController.class).api(name)).withSelfRel());
+            api.add(linkTo(methodOn(GalenWebApiController.class).statistics(name, "10m")).withRel("statistics"));
+            api.add(linkTo(methodOn(GalenWebApiController.class).mean(name, "10m")).withRel("mean"));
+            apis.add(api);
         });
 
-        return apis;
+        return new ResponseEntity<>(apis, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apis/{api}", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpEntity<String> api(@PathVariable String api) {
+        return new ResponseEntity<>("hello", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apis/{api}/statistics", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpEntity<String> statistics(@PathVariable String api,
+                                         @RequestParam(value = "period",
+                                                       required = false,
+                                                       defaultValue = "2m")
+                                         String period) {
+        return new ResponseEntity<>("hello", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apis/{api}/statistics/mean", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpEntity<String> mean(@PathVariable String api,
+                                         @RequestParam(value = "period",
+                                                       required = false,
+                                                       defaultValue = "2m")
+                                         String period) {
+        return new ResponseEntity<>("hello", HttpStatus.OK);
     }
 }
