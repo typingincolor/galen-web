@@ -1,16 +1,16 @@
 $(function() {
   var graphs = function() {
     // select response_time,status_code from statistic where time > now() - 2m
-    $.get("http://192.168.59.103:8086/query?db=galen&q=select%20response_time%2Cstatus_code%20from%20statistic%20where%20time%20%3E%20now()%20-%202m", function(data) {
+    $.get("http://docker.local:8080/healthchecks/a task/statistics?period=2m", function(data) {
 
       var x = ['time'];
       var y = ['duration'];
       var statuscode = {};
 
-      _.each(data.results[0].series[0].values, function(value) {
-        x.push(new Date(value[0]));
-        y.push(value[1]);
-        statuscode[value[2]] = 1 + (statuscode[value[2]] || 0);
+      _.each(data, function(value) {
+        x.push(new Date(value.timestamp));
+        y.push(value.response_time);
+        statuscode[value.status_code] = 1 + (statuscode[value.status_code] || 0);
       });
 
       piechart_data = [];
@@ -50,8 +50,8 @@ $(function() {
 
   var mean_response_time = function() {
     // select mean(response_time) from statistic where time > now() - 2m
-    $.get("http://192.168.59.103:8086/query?db=galen&q=select%20mean(response_time)%20from%20statistic%20where%20time%20%3E%20now()%20-%202m", function(data) {
-      $('#mean_response_time').text(Math.round((data.results[0].series[0].values[0][1] * 100)) / 100);
+    $.get("http://docker.local:8080/healthchecks/a task/statistics/mean?period=2m", function(data) {
+      $('#mean_response_time').text(Math.round((data.mean * 100)) / 100);
     });
   };
 
