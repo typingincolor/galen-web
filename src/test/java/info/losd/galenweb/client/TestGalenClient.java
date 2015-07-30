@@ -70,6 +70,18 @@ public class TestGalenClient {
         checkHealthCheck(result.get(2), "GET", "http://example.com/3", "healthcheck3");
     }
 
+    @Test
+    public void test_it_can_handle_an_empty_list_of_healthchecks() {
+        stubFor(get(urlEqualTo("/tasks"))
+                .willReturn(aResponse()
+                                .withHeader("Content-Type", "application/json")
+                                .withBodyFile("empty_healthcheck_list.json")
+                ));
+
+        List<GalenHealthCheck> result = client.getHealthChecks();
+        assertThat(result, IsCollectionWithSize.hasSize(0));
+    }
+
     private void checkHealthCheck(GalenHealthCheck check, String expectedMethod, String expectedUrl, String expectedName) {
         assertThat(check.getMethod(), is(equalTo(expectedMethod)));
         assertThat(check.getUrl(), is(equalTo(expectedUrl)));

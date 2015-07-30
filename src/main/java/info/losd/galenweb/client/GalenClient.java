@@ -3,6 +3,7 @@ package info.losd.galenweb.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
 import com.jayway.jsonpath.ReadContext;
 import net.minidev.json.JSONArray;
 import org.apache.http.HttpResponse;
@@ -53,14 +54,19 @@ public class GalenClient implements Client {
                     .execute()
                     .returnResponse();
 
+
             ReadContext ctx = JsonPath.parse(response.getEntity().getContent());
+
             JSONArray tasks = ctx.read("$._embedded.tasks");
 
             return new ObjectMapper().readValue(tasks.toJSONString(), new TypeReference<List<GalenHealthCheck>>() {
             });
         } catch (IOException e) {
             LOG.error("Problem getting health check list", e);
-            return Collections.emptyList();
+        } catch (PathNotFoundException e) {
+            LOG.debug("There are no healthchecks");
         }
+
+        return Collections.emptyList();
     }
 }
