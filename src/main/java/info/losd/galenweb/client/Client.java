@@ -1,13 +1,5 @@
-package info.losd.galenweb.web;
+package info.losd.galenweb.client;
 
-import info.losd.galenweb.client.Client;
-import info.losd.galenweb.client.GalenHealthCheck;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -33,18 +25,6 @@ import java.util.List;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-@Controller
-public class GalenWebController {
-    @Autowired
-    Client client;
-
-    @RequestMapping("/")
-    public ModelAndView index() {
-        List<GalenHealthCheck> list = client.getHealthChecks();
-
-        List<Healthcheck> result = new LinkedList<>();
-        list.forEach(item -> result.add(new Healthcheck(item)));
-
-        return new ModelAndView("index", "healthchecks", result);
-    }
+public interface Client {
+    List<GalenHealthCheck> getHealthChecks();
 }

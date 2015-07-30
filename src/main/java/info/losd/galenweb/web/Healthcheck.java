@@ -1,14 +1,6 @@
 package info.losd.galenweb.web;
 
-import info.losd.galenweb.client.Client;
 import info.losd.galenweb.client.GalenHealthCheck;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * The MIT License (MIT)
@@ -33,18 +25,31 @@ import java.util.List;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-@Controller
-public class GalenWebController {
-    @Autowired
-    Client client;
+public class Healthcheck {
+    private String name;
+    private String method;
+    private String url;
 
-    @RequestMapping("/")
-    public ModelAndView index() {
-        List<GalenHealthCheck> list = client.getHealthChecks();
+    public Healthcheck(String name, String method, String url) {
+        this.name = name;
+        this.method = method;
+        this.url = url;
+    }
 
-        List<Healthcheck> result = new LinkedList<>();
-        list.forEach(item -> result.add(new Healthcheck(item)));
+    public Healthcheck(GalenHealthCheck galen) {
+        this(galen.getName(), galen.getMethod(), galen.getUrl());
+    }
 
-        return new ModelAndView("index", "healthchecks", result);
+    public String getUrl() {
+        return url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+
+    public String getMethod() {
+        return method;
     }
 }

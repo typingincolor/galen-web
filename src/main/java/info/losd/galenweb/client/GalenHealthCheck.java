@@ -1,8 +1,8 @@
-package info.losd.galenweb.api;
+package info.losd.galenweb.client;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.hateoas.ResourceSupport;
 
 /**
  * The MIT License (MIT)
@@ -27,16 +27,30 @@ import org.springframework.hateoas.ResourceSupport;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public class Api extends ResourceSupport {
-    private String api;
+@JsonIgnoreProperties(value = { "lastUpdated", "period", "headers", "_links" })
+public class GalenHealthCheck {
+    private String name;
+    private String method;
+    private String url;
 
     @JsonCreator
-    public Api(@JsonProperty("api") String api) {
-        this.api = api;
+    public GalenHealthCheck(@JsonProperty("name") String name,
+                            @JsonProperty("method") String method,
+                            @JsonProperty("url") String url) {
+        this.name = name;
+        this.method = method;
+        this.url = url;
     }
 
-    public String getApi() {
-        return api;
+    public String getName() {
+        return name;
     }
 
+    public String getMethod() {
+        return method;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 }

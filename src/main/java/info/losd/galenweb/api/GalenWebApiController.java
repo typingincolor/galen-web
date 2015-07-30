@@ -1,19 +1,11 @@
 package info.losd.galenweb.api;
 
-import org.influxdb.InfluxDB;
-import org.influxdb.InfluxDBFactory;
-import org.influxdb.dto.Query;
-import org.influxdb.dto.QueryResult;
+import info.losd.galenweb.client.Client;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * The MIT License (MIT)
@@ -40,36 +32,16 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
  */
 @RestController
 public class GalenWebApiController {
-    InfluxDB influxDB = InfluxDBFactory.connect("http://docker.local:8086", "root", "root");
+    @Autowired
+    Client client;
 
-    @RequestMapping(value = "/apis", method = RequestMethod.GET)
+    @RequestMapping(value = "/healthchecks/{healthcheck}", method = RequestMethod.GET)
     @ResponseBody
-    public HttpEntity<List<Api>> getApiList() {
-        Query query = new Query("SHOW TAG VALUES FROM statistic WITH KEY = api", "galen");
-        QueryResult apiList = influxDB.query(query);
-
-        List<Api> apis = new LinkedList<>();
-
-        apiList.getResults().get(0).getSeries().get(0).getValues().forEach(value -> {
-            String name = value.get(0).toString();
-
-            Api api = new Api(name);
-            api.add(linkTo(methodOn(GalenWebApiController.class).api(name)).withSelfRel());
-            api.add(linkTo(methodOn(GalenWebApiController.class).statistics(name, "10m")).withRel("statistics"));
-            api.add(linkTo(methodOn(GalenWebApiController.class).mean(name, "10m")).withRel("mean"));
-            apis.add(api);
-        });
-
-        return new ResponseEntity<>(apis, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/apis/{api}", method = RequestMethod.GET)
-    @ResponseBody
-    public HttpEntity<String> api(@PathVariable String api) {
+    public HttpEntity<String> healthCheck(@PathVariable String healthcheck) {
         return new ResponseEntity<>("hello", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apis/{api}/statistics", method = RequestMethod.GET)
+    @RequestMapping(value = "/healthchecks/{healthchecks}/statistics", method = RequestMethod.GET)
     @ResponseBody
     public HttpEntity<String> statistics(@PathVariable String api,
                                          @RequestParam(value = "period",
@@ -80,7 +52,7 @@ public class GalenWebApiController {
         return new ResponseEntity<>("hello", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apis/{api}/statistics/mean", method = RequestMethod.GET)
+    @RequestMapping(value = "/healthchecks/{healthcheck}/statistics/mean", method = RequestMethod.GET)
     @ResponseBody
     public HttpEntity<String> mean(@PathVariable String api,
                                    @RequestParam(value = "period",
