@@ -6,9 +6,6 @@ machine:
   services:
     - docker
 test:
-  pre:
-    - ./gradlew --quiet findbugsMain
-    - ./gradlew --quiet findbugsTest
   override:
     - ./gradlew --quiet test
   post:
