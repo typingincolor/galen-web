@@ -51,6 +51,11 @@ dependencies {
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
+docker {
+    url = 'https://192.168.59.103:2376'
+    certPath = new File(System.properties['user.home'], '.boot2docker/certs/boot2docker-vm')
+}
+
 task createDockerfile(type: Dockerfile) {
     destFile = project.file('build/docker/Dockerfile')
 

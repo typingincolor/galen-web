@@ -15,6 +15,7 @@ deployment:
   hub:
     branch: java
     commands:
-      - ./gradlew buildImage
+      - cp build/libs/galenweb-0.1.0.jar .
+      - docker build -t typingincolor/galen-web .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push typingincolor/galen-web
