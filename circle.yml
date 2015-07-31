@@ -22,5 +22,6 @@ deployment:
     commands:
       - ./gradlew --quiet assemble
       - docker build -t typingincolor/galen-web:build_$CIRCLE_BUILD_NUM .
+      - docker build -t typingincolor/galen-web:latest .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push typingincolor/galen-web
