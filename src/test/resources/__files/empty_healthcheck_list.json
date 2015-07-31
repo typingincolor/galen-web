@@ -1,0 +1,7 @@
+{
+  "_links" : {
+    "search" : {
+      "href" : "http://localhost:8080/tasks/search"
+    }
+  }
+}
