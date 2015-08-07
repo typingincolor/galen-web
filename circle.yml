@@ -21,10 +21,6 @@ deployment:
     branch: master
     commands:
       - ./gradlew --quiet assemble
-      - git config user.name "circle ci"
-      - git config user.email "junk@losd.com"
-      - git tag -a -m "circle ci build $CIRCLE_BUILD_NUM" build_$CIRCLE_BUILD_NUM
-      - git push origin --tags
       - docker build -t typingincolor/galen-web:build_$CIRCLE_BUILD_NUM .
       - docker build -t typingincolor/galen-web:latest .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
