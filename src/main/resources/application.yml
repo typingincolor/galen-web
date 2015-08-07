@@ -2,4 +2,4 @@ server:
   port: 8081
 
 galen:
-  url: http://docker.local:8080
+  url: http://localhost:8080

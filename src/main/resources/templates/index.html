@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <!-- Load c3.css -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" type="text/css" />
@@ -15,32 +15,36 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <script src="../static/js/galen.js" th:src="@{/js/galen.js}"></script>
-    <link href="../static/css/galen.css" th:href="@{/css/galen.css}" rel="stylesheet" type="text/css" />
+    <script src="../static/js/galen.js" data-th-src="@{/js/galen.js}"></script>
+    <link href="../static/css/galen.css" data-th-href="@{/css/galen.css}" rel="stylesheet" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
 <body>
 <div class="container">
-    <div th:replace="fragments/header :: header">
+    <div data-th-replace="fragments/header :: header">
         <h1>header</h1>
     </div>
 
     <h1>stuff goes here</h1>
 
-    <div class="row" th:each="healthcheck : ${healthchecks}">
+    <div class="row" data-th-each="healthcheck, stat : ${healthchecks}">
         <div class="col-md-1">
-            <span class="label method-GET" th:classappend="${healthcheck.method}" th:text="method-${healthcheck.method}">GET</span>
+            <span class="label" data-th-classappend="'method-' + ${healthcheck.method}" data-th-text="${healthcheck.method}">GET</span>
         </div>
         <div class="col-md-2">
-            <span th:text="${healthcheck.name}">name</span>
+            <span data-th-text="${healthcheck.name}">name</span>
         </div>
-        <div class="col-md-9">
-            <span th:text="${healthcheck.url}">https://example.com/a/sample/url</span>
+        <div class="col-md-3">
+            <span data-th-text="${healthcheck.url}">https://example.com/a/sample/url</span>
+        </div>
+        <div class="col-md-6">
+            <span data-th-id="'healthcheck-' + ${stat.count} + '-data'" data-data-2xx="90" data-data-4xx="5" data-data-5xx="5"></span>
         </div>
     </div>
 
-    <div th:replace="fragments/footer :: footer">
+
+    <div data-th-replace="fragments/footer :: footer">
         <h1>header</h1>
     </div>
 </div>

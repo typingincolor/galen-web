@@ -11,3 +11,7 @@ body {
 .method-GET {
     background-color: #5cb85c;
 }
+
+.method-POST {
+    background-color: #e60000;
+}
