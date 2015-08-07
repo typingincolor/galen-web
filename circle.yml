@@ -21,7 +21,7 @@ deployment:
     branch: master
     commands:
       - ./gradlew --quiet assemble
-      - git tag -a -v build_$CIRCLE_BUILD_NUM -m "circle ci build $CIRCLE_BUILD_NUM"
+      - git tag -a -m "circle ci build $CIRCLE_BUILD_NUM" build_$CIRCLE_BUILD_NUM
       - git push origin --tags
       - docker build -t typingincolor/galen-web:build_$CIRCLE_BUILD_NUM .
       - docker build -t typingincolor/galen-web:latest .
