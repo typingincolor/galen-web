@@ -28,13 +28,17 @@
 
     <h1>stuff goes here</h1>
 
-    <table class="table">
-        <tr th:each="healthcheck : ${healthchecks}">
-            <td th:text="${healthcheck.name}">name</td>
-            <td th:text="${healthcheck.url}"></td>
-            <td th:text="${healthcheck.method}"></td>
-        </tr>
-    </table>
+    <div class="row" th:each="healthcheck : ${healthchecks}">
+        <div class="col-md-1">
+            <span class="label method-GET" th:classappend="${healthcheck.method}" th:text="method-${healthcheck.method}">GET</span>
+        </div>
+        <div class="col-md-2">
+            <span th:text="${healthcheck.name}">name</span>
+        </div>
+        <div class="col-md-9">
+            <span th:text="${healthcheck.url}">https://example.com/a/sample/url</span>
+        </div>
+    </div>
 
     <div th:replace="fragments/footer :: footer">
         <h1>header</h1>
