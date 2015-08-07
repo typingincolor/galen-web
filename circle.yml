@@ -16,11 +16,13 @@ test:
     - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
     - mkdir -p $CIRCLE_ARTIFACTS/findbugs
     - find . -type f -regex ".*/build/reports/findbugs/.*html" -exec cp {} $CIRCLE_ARTIFACTS/findbugs/ \;
+    - ./gradlew --quiet assemble
+    - mkdir -p $CIRCLE_ARTIFACTS/libs
+    - cp build/libs/galenweb-*.jar $CIRCLE_ARTIFACTS/libs
 deployment:
   hub:
     branch: master
     commands:
-      - ./gradlew --quiet assemble
       - docker build -t typingincolor/galen-web:build_$CIRCLE_BUILD_NUM .
       - docker build -t typingincolor/galen-web:latest .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
