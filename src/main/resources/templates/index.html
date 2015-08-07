@@ -39,10 +39,9 @@
             <span data-th-text="${healthcheck.url}">https://example.com/a/sample/url</span>
         </div>
         <div class="col-md-6">
-            <span data-th-id="'healthcheck-' + ${stat.count} + '-data'" data-data-2xx="90" data-data-4xx="5" data-data-5xx="5"></span>
+            <span data-th-id="'healthcheck-' + ${stat.count} + '-data'" data-data-2xx="${healthcheck.okCount}" data-data-4xx="${healthcheck.clientErrorCount}" data-data-5xx="${healthcheck.serverErrorCount}"></span>
         </div>
     </div>
-
 
     <div data-th-replace="fragments/footer :: footer">
         <h1>header</h1>

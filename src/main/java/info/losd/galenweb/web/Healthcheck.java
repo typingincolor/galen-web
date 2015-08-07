@@ -29,6 +29,9 @@ public class Healthcheck {
     private String name;
     private String method;
     private String url;
+    private int okCount;
+    private int clientErrorCount;
+    private int serverErrorCount;
 
     public Healthcheck(String name, String method, String url) {
         this.name = name;
@@ -51,5 +54,17 @@ public class Healthcheck {
 
     public String getMethod() {
         return method;
+    }
+
+    public int getOkCount() {
+        return okCount;
+    }
+
+    public int getClientErrorCount() {
+        return clientErrorCount;
+    }
+
+    public int getServerErrorCount() {
+        return serverErrorCount;
     }
 }
