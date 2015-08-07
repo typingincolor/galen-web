@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
  * THE SOFTWARE.
  */
 @Configuration
-public class ThyleadConfiguration {
+public class ThymeleafConfiguration {
     @Bean
     DataAttributeDialect dataAttributeDialect() {
         return new DataAttributeDialect();
