@@ -1,0 +1,14 @@
+{
+  "name": "galen-api-stub",
+  "version": "1.0.0",
+  "description": "Stub for galen api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew Braithwaite",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
