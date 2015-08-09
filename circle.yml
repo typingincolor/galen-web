@@ -6,21 +6,15 @@ machine:
   services:
     - docker
 test:
-  pre:
-    - ./gradlew --quiet findbugsMain
-    - ./gradlew --quiet findbugsTest
   override:
-    - ./gradlew --quiet test
+    - ./gradlew test
   post:
-    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-    - mkdir -p $CIRCLE_ARTIFACTS/findbugs
-    - find . -type f -regex ".*/build/reports/findbugs/.*html" -exec cp {} $CIRCLE_ARTIFACTS/findbugs/ \;
-    - ./gradlew --quiet assemble
+    - ./gradlew assemble
     - mkdir -p $CIRCLE_ARTIFACTS/libs
     - cp build/libs/galenweb-*.jar $CIRCLE_ARTIFACTS/libs
     - ./gradlew jacocoTestReport
     - mkdir -p $CIRCLE_ARTIFACTS/jacoco
+    - mkdir -p $CIRCLE_ARTIFACTS/jacoco/.resources
     - cp -r build/jacocoHtml/* $CIRCLE_ARTIFACTS/jacoco
     - cp -r build/jacocoHtml/.resources/* $CIRCLE_ARTIFACTS/jacoco/.resources
 deployment:
