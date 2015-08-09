@@ -1,6 +1,9 @@
 package info.losd.galenweb.client;
 
-import java.util.List;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.junit.Rule;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The MIT License (MIT)
@@ -25,8 +28,10 @@ import java.util.List;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public interface Client {
-    List<GalenHealthCheck> getHealthChecks();
-
-    GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck);
+public class GalenClientTest {
+    @Rule
+    @SuppressFBWarnings(value = {"URF_UNREAD_FIELD", "URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"}, justification = "Wiremock uses it")
+    public WireMockRule wireMockRule = new WireMockRule();
+    @Autowired
+    Client client;
 }

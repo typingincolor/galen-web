@@ -1,5 +1,8 @@
 package info.losd.galenweb.client;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -25,8 +28,26 @@ import java.util.List;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public interface Client {
-    List<GalenHealthCheck> getHealthChecks();
+//@JsonIgnoreProperties(ignoreUnknown = true)
+public class GalenHealthCheckStatusCodes {
+    @JsonProperty("healthcheck")
+    private String heatlhcheck;
 
-    GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck);
+    @JsonProperty("status_codes")
+    private List<GalenStatusCodeCount> statusCodes;
+
+    @JsonCreator
+    public GalenHealthCheckStatusCodes(@JsonProperty("healthcheck") String heatlhcheck,
+                                       @JsonProperty("status_codes") List<GalenStatusCodeCount> statusCodes) {
+        this.heatlhcheck = heatlhcheck;
+        this.statusCodes = statusCodes;
+    }
+
+    public String getHeatlhcheck() {
+        return heatlhcheck;
+    }
+
+    public List<GalenStatusCodeCount> getStatusCodes() {
+        return statusCodes;
+    }
 }

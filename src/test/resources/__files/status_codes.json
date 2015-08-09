@@ -1,0 +1,17 @@
+{
+  "healthcheck": "healthcheck1",
+  "status_codes": [
+    {
+      "status_code": 200,
+      "count": 10
+    },
+    {
+      "status_code": 400,
+      "count": 1
+    },
+    {
+      "status_code": 500,
+      "count": 2
+    }
+  ]
+}

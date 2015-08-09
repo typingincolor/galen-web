@@ -1,6 +1,7 @@
 package info.losd.galenweb.client;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The MIT License (MIT)
@@ -25,8 +26,23 @@ import java.util.List;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public interface Client {
-    List<GalenHealthCheck> getHealthChecks();
+public class GalenStatusCodeCount {
+    @JsonProperty("status_code")
+    private int statusCode;
+    @JsonProperty("count")
+    private int count;
 
-    GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck);
+    @JsonCreator
+    public GalenStatusCodeCount(@JsonProperty("status_code") int statusCode, @JsonProperty("count") int count) {
+        this.statusCode = statusCode;
+        this.count = count;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public int getCount() {
+        return count;
+    }
 }

@@ -1,14 +1,10 @@
 package info.losd.galenweb.client;
 
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import info.losd.galenweb.GalenWeb;
 import org.hamcrest.collection.IsCollectionWithSize;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -46,21 +42,14 @@ import static org.hamcrest.Matchers.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {GalenWeb.class})
 @TestPropertySource("/test.properties")
-public class TestGalenClient {
-    @Rule
-    @SuppressFBWarnings(value = {"URF_UNREAD_FIELD", "URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"}, justification = "Wiremock uses it")
-    public WireMockRule wireMockRule = new WireMockRule();
-
-    @Autowired
-    Client client;
-
+public class TestGetListOfHealthChecks extends GalenClientTest {
     @Test
     public void test_it_can_get_a_list_of_healthchecks() {
         stubFor(get(urlEqualTo("/tasks"))
-                .willReturn(aResponse()
-                                .withHeader("Content-Type", "application/json")
-                                .withBodyFile("healthcheck_list.json")
-                ));
+                        .willReturn(aResponse()
+                                            .withHeader("Content-Type", "application/json")
+                                            .withBodyFile("healthcheck_list.json")
+                        ));
 
         List<GalenHealthCheck> result = client.getHealthChecks();
         assertThat(result, IsCollectionWithSize.hasSize(3));
@@ -72,19 +61,34 @@ public class TestGalenClient {
 
     @Test
     public void test_it_can_handle_an_empty_list_of_healthchecks() {
-        stubFor(get(urlEqualTo("/tasks"))
-                .willReturn(aResponse()
-                                .withHeader("Content-Type", "application/json")
-                                .withBodyFile("empty_healthcheck_list.json")
-                ));
+        stubFor(get(urlEqualTo("/tasks")).willReturn(
+                aResponse().withHeader("Content-Type", "application/json")
+                           .withBodyFile("empty_healthcheck_list.json")));
 
         List<GalenHealthCheck> result = client.getHealthChecks();
         assertThat(result, IsCollectionWithSize.hasSize(0));
     }
 
-    private void checkHealthCheck(GalenHealthCheck check, String expectedMethod, String expectedUrl, String expectedName) {
-        assertThat(check.getMethod(), is(equalTo(expectedMethod)));
-        assertThat(check.getUrl(), is(equalTo(expectedUrl)));
-        assertThat(check.getName(), is(equalTo(expectedName)));
+    @Test
+    public void test_it_can_handle_a_404_error() {
+        stubFor(get(urlEqualTo("/tasks")).willReturn(aResponse().withStatus(404)));
+
+        List<GalenHealthCheck> result = client.getHealthChecks();
+        assertThat(result, IsCollectionWithSize.hasSize(0));
+    }
+
+    @Test
+    public void test_it_can_handle_a_500_error() {
+        stubFor(get(urlEqualTo("/tasks")).willReturn(aResponse().withStatus(500)));
+
+        List<GalenHealthCheck> result = client.getHealthChecks();
+        assertThat(result, IsCollectionWithSize.hasSize(0));
+    }
+
+    private void checkHealthCheck(GalenHealthCheck check, String expectedMethod, String expectedUrl,
+                                  String expectedName) {
+        assertThat("method", check.getMethod(), is(equalTo(expectedMethod)));
+        assertThat("url", check.getUrl(), is(equalTo(expectedUrl)));
+        assertThat("name", check.getName(), is(equalTo(expectedName)));
     }
 }

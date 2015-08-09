@@ -45,10 +45,9 @@ public class GalenWebApiController {
     @ResponseBody
     public HttpEntity<String> statistics(@PathVariable String api,
                                          @RequestParam(value = "period",
-                                                       required = false,
-                                                       defaultValue = "2m")
-                                         String period)
-    {
+                                                 required = false,
+                                                 defaultValue = "2m")
+                                         String period) {
         return new ResponseEntity<>("hello", HttpStatus.OK);
     }
 
@@ -56,10 +55,9 @@ public class GalenWebApiController {
     @ResponseBody
     public HttpEntity<String> mean(@PathVariable String api,
                                    @RequestParam(value = "period",
-                                                 required = false,
-                                                 defaultValue = "2m")
-                                   String period)
-    {
+                                           required = false,
+                                           defaultValue = "2m")
+                                   String period) {
         return new ResponseEntity<>("hello", HttpStatus.OK);
     }
 }

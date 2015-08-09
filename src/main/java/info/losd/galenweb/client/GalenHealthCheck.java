@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-@JsonIgnoreProperties(value = { "lastUpdated", "period", "headers", "_links" })
+@JsonIgnoreProperties(value = {"lastUpdated", "period", "headers", "_links"})
 public class GalenHealthCheck {
     private String name;
     private String method;

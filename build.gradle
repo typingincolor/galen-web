@@ -18,6 +18,7 @@ apply plugin: 'spring-boot'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'findbugs'
+apply plugin: 'jacoco'
 
 jar {
     baseName = 'galenweb'
@@ -45,10 +46,25 @@ dependencies {
     testCompile 'com.github.tomakehurst:wiremock:1.56'
     testCompile 'com.google.code.findbugs:annotations:3.0.0'
 }
+test {
+    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    }
+}
 
 tasks.withType(FindBugs) {
     reports {
         xml.enabled = false
         html.enabled = true
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
     }
 }
