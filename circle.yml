@@ -22,6 +22,7 @@ test:
     - ./gradlew jacocoTestReport
     - mkdir -p $CIRCLE_ARTIFACTS/jacoco
     - cp -r build/jacocoHtml/* $CIRCLE_ARTIFACTS/jacoco
+    - cp -r build/jacocoHtml/.resources/* $CIRCLE_ARTIFACTS/jacoco/.resources
 deployment:
   hub:
     branch: master
