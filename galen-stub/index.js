@@ -3,15 +3,26 @@ var app = express();
 
 app.get('/healthchecks/:healthcheck/statistics/status_codes', function(req, res) {
   var healthcheck = req.params.healthcheck;
+
+  console.log("GET /healthchecks/" + healthcheck + "/statistics/status_codes");
+
   res.status(200).json({
     "healthcheck": healthcheck,
-    "2xx": 67,
-    "4xx": 13,
-    "5xx": 30
+    "status_codes": [{
+      "status_code": 200,
+      "count": 10
+    }, {
+      "status_code": 400,
+      "count": 1
+    }, {
+      "status_code": 500,
+      "count": 2
+    }]
   });
 });
 
 app.get('/tasks', function(req, res) {
+  console.log("GET /tasks");
   res.status(200).json({
     "_links": {
       "search": {
