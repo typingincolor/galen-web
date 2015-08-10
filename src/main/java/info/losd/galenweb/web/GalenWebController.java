@@ -2,6 +2,7 @@ package info.losd.galenweb.web;
 
 import info.losd.galenweb.client.Client;
 import info.losd.galenweb.client.GalenHealthCheck;
+import info.losd.galenweb.client.GalenHealthCheckStatusCodes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +44,25 @@ public class GalenWebController {
         List<GalenHealthCheck> list = client.getHealthChecks();
 
         List<Healthcheck> result = new LinkedList<>();
-        list.forEach(item -> result.add(new Healthcheck(item)));
+        list.forEach(item -> {
+            GalenHealthCheckStatusCodes statusCodes = client.getStatusCodeCounts(item.getName());
+
+            long okCount = statusCodes.getStatusCodes().stream().filter(
+                    code -> code.getStatusCode() >= 200 && code.getStatusCode() < 300)
+                                      .mapToInt(i -> i.getCount())
+                                      .reduce(0, (a, b) -> a + b);
+
+            long clientErrorCount = statusCodes.getStatusCodes().stream().filter(
+                    code -> code.getStatusCode() >= 400 && code.getStatusCode() < 500)
+                                               .mapToInt(i -> i.getCount()).reduce(0, (a, b) -> a + b);
+
+            long serverErrorCount = statusCodes.getStatusCodes().stream().filter(
+                    code -> code.getStatusCode() >= 500 && code.getStatusCode() < 600)
+                                               .mapToInt(i -> i.getCount()).reduce(0, (a, b) -> a + b);
+
+            Healthcheck hc = new Healthcheck(item, okCount, clientErrorCount, serverErrorCount);
+            result.add(hc);
+        });
 
         return new ModelAndView("index", "healthchecks", result);
     }

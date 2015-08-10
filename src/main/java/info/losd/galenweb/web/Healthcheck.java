@@ -29,18 +29,21 @@ public class Healthcheck {
     private String name;
     private String method;
     private String url;
-    private int okCount;
-    private int clientErrorCount;
-    private int serverErrorCount;
+    private long okCount;
+    private long clientErrorCount;
+    private long serverErrorCount;
 
-    public Healthcheck(String name, String method, String url) {
+    Healthcheck(String name, String method, String url) {
         this.name = name;
         this.method = method;
         this.url = url;
     }
 
-    public Healthcheck(GalenHealthCheck galen) {
+    Healthcheck(GalenHealthCheck galen, long okCount, long clientErrorCount, long serverErrorCount) {
         this(galen.getName(), galen.getMethod(), galen.getUrl());
+        this.okCount = okCount;
+        this.clientErrorCount = clientErrorCount;
+        this.serverErrorCount = serverErrorCount;
     }
 
     public String getUrl() {
@@ -56,15 +59,15 @@ public class Healthcheck {
         return method;
     }
 
-    public int getOkCount() {
+    public long getOkCount() {
         return okCount;
     }
 
-    public int getClientErrorCount() {
+    public long getClientErrorCount() {
         return clientErrorCount;
     }
 
-    public int getServerErrorCount() {
+    public long getServerErrorCount() {
         return serverErrorCount;
     }
 }

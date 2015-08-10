@@ -72,8 +72,6 @@ public class TestGetHealthCheckStatusCodes extends GalenClientTest {
         assertThat(result.getHeatlhcheck(), is(equalTo("healthcheck1")));
     }
 
-
-
     private void checkStatusCode(GalenStatusCodeCount sc, int expectedStatusCode, int expectedCount) {
         assertThat("status_code count", sc.getCount(), is(equalTo(expectedCount)));
         assertThat("status_code", sc.getStatusCode(), is(equalTo(expectedStatusCode)));
