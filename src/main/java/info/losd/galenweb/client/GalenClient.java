@@ -87,7 +87,7 @@ public class GalenClient implements Client {
     }
 
     @Override
-    public GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck) {
+    public GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck, String period) {
         try {
             ResponseHandler<GalenHealthCheckStatusCodes> handler = response -> {
                 StatusLine status = response.getStatusLine();
@@ -104,7 +104,7 @@ public class GalenClient implements Client {
             };
 
             return
-                    Request.Get(String.format("%s/healthchecks/%s/statistics/status_codes", url, healthcheck))
+                    Request.Get(String.format("%s/healthchecks/%s/statistics/status_codes?period=%s", url, healthcheck, period))
                            .execute()
                            .handleResponse(handler);
         } catch (IOException e) {

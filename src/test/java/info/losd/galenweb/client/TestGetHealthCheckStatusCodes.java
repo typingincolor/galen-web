@@ -42,10 +42,10 @@ import static org.hamcrest.Matchers.is;
 public class TestGetHealthCheckStatusCodes extends GalenClientTest {
     @Test
     public void test_it_can_get_a_count_of_the_different_https_status_type() {
-        stubFor(get(urlEqualTo("/healthchecks/healthcheck1/statistics/status_codes")).willReturn(
+        stubFor(get(urlEqualTo("/healthchecks/healthcheck1/statistics/status_codes?period=60m")).willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("status_codes.json")));
 
-        GalenHealthCheckStatusCodes result = client.getStatusCodeCounts("healthcheck1");
+        GalenHealthCheckStatusCodes result = client.getStatusCodeCounts("healthcheck1", "60m");
         assertThat(result.getStatusCodes(), IsCollectionWithSize.hasSize(3));
         assertThat(result.getHeatlhcheck(), is(equalTo("healthcheck1")));
         checkStatusCode(result.getStatusCodes().get(0), 200, 10);
@@ -55,19 +55,19 @@ public class TestGetHealthCheckStatusCodes extends GalenClientTest {
 
     @Test
     public void test_it_can_handle_a_404_error(){
-        stubFor(get(urlEqualTo("/healthchecks/healthcheck1/statistics/status_codes"))
+        stubFor(get(urlEqualTo("/healthchecks/healthcheck1/statistics/status_codes?period=60m"))
                         .willReturn(aResponse().withStatus(404)));
 
-        GalenHealthCheckStatusCodes result = client.getStatusCodeCounts("healthcheck1");
+        GalenHealthCheckStatusCodes result = client.getStatusCodeCounts("healthcheck1", "60m");
         assertThat(result.getStatusCodes(), IsCollectionWithSize.hasSize(0));
         assertThat(result.getHeatlhcheck(), is(equalTo("healthcheck1")));
     }
 
     @Test
     public void test_it_can_handle_a_500_error(){
-        stubFor(get(urlEqualTo("/healthchecks/healthcheck1/statistics/status_codes")).willReturn(aResponse().withStatus(500)));
+        stubFor(get(urlEqualTo("/healthchecks/healthcheck1/statistics/status_codes?period=60m")).willReturn(aResponse().withStatus(500)));
 
-        GalenHealthCheckStatusCodes result = client.getStatusCodeCounts("healthcheck1");
+        GalenHealthCheckStatusCodes result = client.getStatusCodeCounts("healthcheck1", "60m");
         assertThat(result.getStatusCodes(), IsCollectionWithSize.hasSize(0));
         assertThat(result.getHeatlhcheck(), is(equalTo("healthcheck1")));
     }

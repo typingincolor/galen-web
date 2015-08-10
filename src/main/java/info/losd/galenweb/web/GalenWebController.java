@@ -45,7 +45,7 @@ public class GalenWebController {
 
         List<Healthcheck> result = new LinkedList<>();
         list.forEach(item -> {
-            GalenHealthCheckStatusCodes statusCodes = client.getStatusCodeCounts(item.getName());
+            GalenHealthCheckStatusCodes statusCodes = client.getStatusCodeCounts(item.getName(), "60m");
 
             long okCount = statusCodes.getStatusCodes().stream().filter(
                     code -> code.getStatusCode() >= 200 && code.getStatusCode() < 300)

@@ -89,9 +89,9 @@ public class TestWebControllerIndex {
         codes2.add(new GalenStatusCodeCount(503, 9));
 
         when(client.getHealthChecks()).thenReturn(healthchecks);
-        when(client.getStatusCodeCounts("healthcheck1"))
+        when(client.getStatusCodeCounts("healthcheck1", "60m"))
                 .thenReturn(new GalenHealthCheckStatusCodes("healthcheck1", codes1));
-        when(client.getStatusCodeCounts("healthcheck2")).thenReturn(
+        when(client.getStatusCodeCounts("healthcheck2", "60m")).thenReturn(
                 new GalenHealthCheckStatusCodes("healthcheck2", codes2));
 
 
@@ -105,8 +105,8 @@ public class TestWebControllerIndex {
         checkHealthCheck(result.get(1), "POST", "healthcheck2", "http://example.com/hc2", 2, 12, 15);
 
         verify(client, times(1)).getHealthChecks();
-        verify(client, times(1)).getStatusCodeCounts("healthcheck1");
-        verify(client, times(1)).getStatusCodeCounts("healthcheck2");
+        verify(client, times(1)).getStatusCodeCounts("healthcheck1", "60m");
+        verify(client, times(1)).getStatusCodeCounts("healthcheck2", "60m");
     }
 
     private void checkHealthCheck(Healthcheck check, String expectedMethod, String expectedName, String expectedUrl,

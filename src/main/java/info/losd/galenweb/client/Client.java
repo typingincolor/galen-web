@@ -28,5 +28,5 @@ import java.util.List;
 public interface Client {
     List<GalenHealthCheck> getHealthChecks();
 
-    GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck);
+    GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck, String period);
 }
