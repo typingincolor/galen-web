@@ -10,13 +10,13 @@ app.get('/healthchecks/:healthcheck/statistics/status_codes', function(req, res)
     "healthcheck": healthcheck,
     "status_codes": [{
       "status_code": 200,
-      "count": 10
+      "count": Math.floor((Math.random() * 20) + 1)
     }, {
       "status_code": 400,
-      "count": 1
+      "count": Math.floor((Math.random() * 20) + 1)
     }, {
       "status_code": 500,
-      "count": 2
+      "count": Math.floor((Math.random() * 20) + 1)
     }]
   });
 });

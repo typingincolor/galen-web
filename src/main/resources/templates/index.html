@@ -15,7 +15,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <script src="../static/js/galen.js" data-th-src="@{/js/galen.js}"></script>
+    <script src="../static/js/galen.js" data-th-src="@{/js/galen-status-code-display.js}"></script>
     <link href="../static/css/galen.css" data-th-href="@{/css/galen.css}" rel="stylesheet" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
@@ -33,13 +33,13 @@
             <span class="label" data-th-classappend="'method-' + ${healthcheck.method}" data-th-text="${healthcheck.method}">GET</span>
         </div>
         <div class="col-md-2">
+            <span data-th-id="'healthcheck-data-' + ${stat.count}" data-data-2xx="${healthcheck.okCount}" data-data-4xx="${healthcheck.clientErrorCount}" data-data-5xx="${healthcheck.serverErrorCount}"></span>
+        </div>
+        <div class="col-md-2">
             <span data-th-text="${healthcheck.name}">name</span>
         </div>
         <div class="col-md-3">
             <span data-th-text="${healthcheck.url}">https://example.com/a/sample/url</span>
-        </div>
-        <div class="col-md-6">
-            <span data-th-id="'healthcheck-' + ${stat.count} + '-data'" data-data-2xx="${healthcheck.okCount}" data-data-4xx="${healthcheck.clientErrorCount}" data-data-5xx="${healthcheck.serverErrorCount}"></span>
         </div>
     </div>
 
