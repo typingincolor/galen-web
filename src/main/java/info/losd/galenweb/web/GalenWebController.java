@@ -5,6 +5,7 @@ import info.losd.galenweb.client.GalenHealthCheck;
 import info.losd.galenweb.client.GalenHealthCheckStatusCodes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -65,5 +66,10 @@ public class GalenWebController {
         });
 
         return new ModelAndView("index", "healthchecks", result);
+    }
+
+    @RequestMapping("/status/{healthcheck}")
+    public ModelAndView status(@PathVariable("healthcheck") String healthcheck) {
+        return new ModelAndView("status", "healthcheck", healthcheck);
     }
 }

@@ -36,7 +36,7 @@
             <span data-th-id="'healthcheck-data-' + ${stat.count}" data-data-2xx="${healthcheck.okCount}" data-data-4xx="${healthcheck.clientErrorCount}" data-data-5xx="${healthcheck.serverErrorCount}"></span>
         </div>
         <div class="col-md-2">
-            <span data-th-text="${healthcheck.name}">name</span>
+            <a data-th-href="@{/status/} + ${healthcheck.name}" data-th-text="${healthcheck.name}">name</a>
         </div>
         <div class="col-md-3">
             <span data-th-text="${healthcheck.url}">https://example.com/a/sample/url</span>
