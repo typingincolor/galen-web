@@ -1,6 +1,7 @@
 package info.losd.galenweb.api;
 
 import info.losd.galenweb.client.Client;
+import info.losd.galenweb.client.GalenHealthCheckMean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,7 @@ public class GalenWebApiController {
                                            required = false,
                                            defaultValue = "2m")
                                    String period) {
-        return new ResponseEntity<>("hello", HttpStatus.OK);
+        GalenHealthCheckMean result = client.getMeanResponseTime(healthcheck, period);
+        return new ResponseEntity<>(Double.toString(result.getMean()), HttpStatus.OK);
     }
 }

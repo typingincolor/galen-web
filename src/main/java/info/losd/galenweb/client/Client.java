@@ -30,5 +30,5 @@ public interface Client {
 
     GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck, String period);
 
-    GalenHealthCheckMean getMeanResponseTime(String healthcheck1, String period);
+    GalenHealthCheckMean getMeanResponseTime(String healthcheck, String period);
 }
