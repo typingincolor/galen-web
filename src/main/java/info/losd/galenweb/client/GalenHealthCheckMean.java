@@ -1,6 +1,8 @@
 package info.losd.galenweb.client;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The MIT License (MIT)
@@ -25,10 +27,16 @@ import java.util.List;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public interface Client {
-    List<GalenHealthCheck> getHealthChecks();
+@JsonIgnoreProperties(value = { "timestamp" })
+public class GalenHealthCheckMean {
+    private double mean;
 
-    GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck, String period);
+    @JsonCreator
+    public GalenHealthCheckMean(@JsonProperty("mean") double mean) {
+        this.mean = mean;
+    }
 
-    GalenHealthCheckMean getMeanResponseTime(String healthcheck1, String period);
+    public double getMean() {
+        return mean;
+    }
 }

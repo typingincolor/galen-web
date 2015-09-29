@@ -1,6 +1,15 @@
 package info.losd.galenweb.client;
 
-import java.util.List;
+import info.losd.galenweb.GalenWeb;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 /**
  * The MIT License (MIT)
@@ -25,10 +34,19 @@ import java.util.List;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-public interface Client {
-    List<GalenHealthCheck> getHealthChecks();
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {GalenWeb.class})
+@TestPropertySource("/test.properties")
+public class TestGetMean extends GalenClientTest {
+    @Test
+    public void it_can_get_the_mean_response_time_for_a_healthcheck() {
+        stubFor(get(urlPathEqualTo("/healthchecks/healthcheck1/statistics/mean"))
+                        .withQueryParam("period", equalTo("2m"))
+                        .willReturn(aResponse().withBodyFile(
+                                "healthcheck_mean.json")));
 
-    GalenHealthCheckStatusCodes getStatusCodeCounts(String healthcheck, String period);
+        GalenHealthCheckMean mean = client.getMeanResponseTime("healthcheck1", "2m");
 
-    GalenHealthCheckMean getMeanResponseTime(String healthcheck1, String period);
+        assertThat(mean.getMean(), is(100.0));
+    }
 }

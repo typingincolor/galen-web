@@ -46,7 +46,6 @@ import java.util.Optional;
 public class GalenClient implements Client {
     private Logger LOG = LoggerFactory.getLogger(GalenClient.class);
     private Configuration conf = Configuration.defaultConfiguration();
-    ;
 
     {
         conf = conf.addOptions(Option.SUPPRESS_EXCEPTIONS);
@@ -110,6 +109,35 @@ public class GalenClient implements Client {
         } catch (IOException e) {
             LOG.error("Problem getting healthcheck status codes", e);
             return new GalenHealthCheckStatusCodes(healthcheck, Collections.emptyList());
+        }
+    }
+
+    @Override
+    public GalenHealthCheckMean getMeanResponseTime(String healthcheck, String period) {
+        try {
+            ResponseHandler<GalenHealthCheckMean> handler = response -> {
+                StatusLine status = response.getStatusLine();
+                if (status.getStatusCode() == 200) {
+                    return new ObjectMapper()
+                            .readValue(response.getEntity().getContent(),
+                                       GalenHealthCheckMean.class);
+                }
+
+                LOG.error("Problem getting status codes - status code: {}, reason: {}",
+                          status.getStatusCode(),
+                          status.getReasonPhrase());
+                return new  GalenHealthCheckMean(Double.MIN_VALUE);
+            };
+
+            String requestUrl = String.format("%s/healthchecks/%s/statistics/mean?period=%s", url, healthcheck, period);
+
+            return Request.Get(requestUrl)
+                    .execute()
+                    .handleResponse(handler);
+        } catch (IOException e) {
+            LOG.error("Problem getting healthcheck status codes", e);
+
+            return new GalenHealthCheckMean(Double.MIN_VALUE);
         }
     }
 }
