@@ -1,7 +1,9 @@
 $(function() {
+  var healthcheck = $('#status').attr("data-healthcheck");
+
   var graphs = function() {
     // select response_time,status_code from statistic where time > now() - 2m
-    $.get("http://docker.local:8080/healthchecks/a task/statistics?period=2m", function(data) {
+    $.get("/healthchecks/" + healthcheck +  "/statistics?period=2m", function(data) {
 
       var x = ['time'];
       var y = ['duration'];
@@ -50,7 +52,7 @@ $(function() {
 
   var mean_response_time = function() {
     // select mean(response_time) from statistic where time > now() - 2m
-    $.get("http://docker.local:8080/healthchecks/a task/statistics/mean?period=2m", function(data) {
+    $.get("/healthchecks/" + healthcheck + "/statistics/mean?period=2m", function(data) {
       $('#mean_response_time').text(Math.round((data.mean * 100)) / 100);
     });
   };

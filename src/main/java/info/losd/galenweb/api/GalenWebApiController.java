@@ -41,9 +41,9 @@ public class GalenWebApiController {
         return new ResponseEntity<>("hello", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/healthchecks/{healthchecks}/statistics", method = RequestMethod.GET)
+    @RequestMapping(value = "/healthchecks/{healthcheck}/statistics", method = RequestMethod.GET)
     @ResponseBody
-    public HttpEntity<String> statistics(@PathVariable String api,
+    public HttpEntity<String> statistics(@PathVariable String healthcheck,
                                          @RequestParam(value = "period",
                                                  required = false,
                                                  defaultValue = "2m")
@@ -53,7 +53,7 @@ public class GalenWebApiController {
 
     @RequestMapping(value = "/healthchecks/{healthcheck}/statistics/mean", method = RequestMethod.GET)
     @ResponseBody
-    public HttpEntity<String> mean(@PathVariable String api,
+    public HttpEntity<String> mean(@PathVariable String healthcheck,
                                    @RequestParam(value = "period",
                                            required = false,
                                            defaultValue = "2m")
